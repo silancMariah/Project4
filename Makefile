@@ -16,16 +16,22 @@ TARGET = $(BUILD_DIR)/pong.elf
 # Flags
 CFLAGS = -I$(INC_DIR) -Wall -Wextra
 
+.PHONY: all clean
+
 # Default rule
 all: $(TARGET)
 
 # Build target
-$(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $(TARGET)
+$(TARGET): $(OBJS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 
-# Build object files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+# Build object files (ensure build dir exists)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+# Create build directory if it doesn't exist
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 # Clean build
 clean:
