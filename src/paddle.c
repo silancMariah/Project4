@@ -10,28 +10,23 @@
 
 /* Flytta paddeln med delta pixlar (positivt = ner, negativt = upp).
    Funktionen uppdaterar bara position och håller paddeln inom skärmen. */
-void movePaddle(Paddle* p, int delta) {
-    if (!p) return;
+void movePaddle(Paddle *p, int delta)
+{
+    if (!p)
+        return;
 
     p->y += delta;
 
     /* Klampa inom skärmen */
-    if (p->y < 0) {
+    if (p->y < 0)
+    {
         p->y = 0;
     }
-    if (p->y > SCREEN_HEIGHT - p->height) {
+    if (p->y > SCREEN_HEIGHT - p->height)
+    {
         p->y = SCREEN_HEIGHT - p->height;
     }
 }
 
-Void chooseside(){
-If(aiSide == left) {
-    
 
 }
-
- 
-}
-
-}
-

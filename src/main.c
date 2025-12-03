@@ -10,7 +10,8 @@
 #include "paddle.h"
 #include "ball.h"
 #include "game.h"
-
+#include "points.h"
+#include "klocka.h"
 /* drawBallPattern finns i ball.c men deklareras inte i ball.h */
 void drawBallPattern(int x, int y);
 
@@ -24,6 +25,7 @@ int main(void) {
     Paddle right = {290, 200, 10, 60};
     Ball ball    = {160, 120, 1, 1, 5};
 
+
     while (1) {
         clearScreen(0);                 // rensa skärmen
         drawPaddle(&left, 7);           // rita paddlar med färg 7
@@ -31,6 +33,9 @@ int main(void) {
         drawBallPattern(ball.x, ball.y);// rita bollmönstret
         updateBall(&ball);              // uppdatera bollens position
         delay();
+        if(TestaTimer())){
+          break;
+        }
     }
 
     return 0;
