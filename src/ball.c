@@ -11,10 +11,10 @@
 #include "graphics.h"
 
 const int pat[16]= {
-    1,0,0,1,
-    0,1,1,0,
-    0,1,1,0,
-    1,0,0,1
+    0,0,1,0,
+    0,1,1,1,
+    0,1,1,1,
+    0,0,1,0
 };    
 
 void drawBallPattern(int x, int y){

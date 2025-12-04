@@ -70,4 +70,3 @@ void drawPaddle(const Paddle *p, unsigned char color) {
     drawRect(p->x, p->y, p->width, p->height, color);
 }
 
-#endif
