@@ -28,7 +28,7 @@ void Tid(){
 
     *(TMR1_PERLO) = period & 0xFFFF;
     *(TMR1_PERHI) = period >> 16;  
-    // Bit 0=0
+    // Bit 0=0 => kör inte  
         *(TMR1_CTRL) = 0x0;
 }
 
