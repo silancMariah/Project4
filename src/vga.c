@@ -1,18 +1,19 @@
 /*
   vga.c
   - Definierar pekaren till videominnet (vga_buffer).
-  - Använder faktisk VGA-adress som standard, men har ett simuleringsläge
-    där en intern buffer används.
+  - På värdmaskin använder vi en allokerad buffer så programmet kan köras
+    utan verklig VGA-hårdvara. På riktig hårdvara: definiera USE_REAL_VGA
+    och sätt rätt basadress (VGA_BASE_ADDR).
 */
 #include "graphics.h"
 
 #ifndef VGA_BASE_ADDR
-#define VGA_BASE_ADDR 0x08000000
+#define VGA_BASE_ADDR 0xA0000
 #endif
 
-#ifdef VGA_SIMULATION
-static unsigned char vga_memory[SCREEN_WIDTH * SCREEN_HEIGHT];
-volatile unsigned char *vga_buffer = vga_memory;
+#ifdef USE_REAL_VGA
+volatile unsigned char *vga_buffer = (volatile unsigned char*)VGA_BASE_ADDR; // byt vid behov
 #else
-volatile unsigned char *vga_buffer = (volatile unsigned char *)VGA_BASE_ADDR;
+static unsigned char host_vga_buffer[SCREEN_WIDTH * SCREEN_HEIGHT];
+volatile unsigned char *vga_buffer = host_vga_buffer;
 #endif

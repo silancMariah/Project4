@@ -17,9 +17,6 @@ extern volatile unsigned char *vga_buffer;
 
 #include "graphics.h"
 #include <stddef.h>
-#ifdef VGA_SIMULATION
-#include <stdio.h>
-#endif
 
 /* Ritar ett binärt mönster (pattern är w*h element i rad-major).
    1 = rita color_on, 0 = hoppa eller rita color_off (använd 255 för transparent). */
@@ -64,6 +61,16 @@ void drawRect(int x, int y, int w, int h, unsigned char color) {
 void drawPaddle(const Paddle *p, unsigned char color) {
     if (!p) return;
     drawRect(p->x, p->y, p->width, p->height, color);
+}
+
+/* Enkel testbild: lodräta färgränder över hela skärmen. */
+void drawTestPattern(void) {
+    for (int y = 0; y < SCREEN_HEIGHT; y++) {
+        for (int x = 0; x < SCREEN_WIDTH; x++) {
+            unsigned char color = (unsigned char)((x / 20) % 16);
+            putPixel(x, y, color);
+        }
+    }
 }
 
 #ifdef VGA_SIMULATION

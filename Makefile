@@ -6,20 +6,8 @@ SRC_DIR = src
 INC_DIR = include
 BUILD_DIR = build
 
-# Files
-SRCS = \
-	$(SRC_DIR)/main.c \
-	$(SRC_DIR)/animation.c \
-	$(SRC_DIR)/ball.c \
-	$(SRC_DIR)/game.c \
-	$(SRC_DIR)/gameover.c \
-	$(SRC_DIR)/graphics.c \
-	$(SRC_DIR)/input.c \
-	$(SRC_DIR)/klocka.c \
-	$(SRC_DIR)/paddle.c \
-	$(SRC_DIR)/points.c \
-	$(SRC_DIR)/timer.c \
-	$(SRC_DIR)/vga.c
+# Files (exclude test/demo programs from main build)
+SRCS = $(filter-out $(SRC_DIR)/ballTest.c $(SRC_DIR)/spriteTest.c,$(wildcard $(SRC_DIR)/*.c))
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
 # Output
