@@ -1,5 +1,6 @@
 #include "gameover.h"
 #include "graphics.h"
+#include "game.h"
 
 static const char letters[26][7][5] = {
 
