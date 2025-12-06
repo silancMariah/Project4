@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include "animation.h"
+#include "graphics.h"
 
 void printSprite16(const unsigned char sprite[16][16]) {
     for(int r = 0; r < 16; r++){
@@ -16,7 +18,7 @@ static const unsigned char PIG[16][16] = { {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}, {1
 void drawPig(int x, int y) {
     for (int row = 0; row < 16; row++) {
         for (int col = 0; col < 16; col++) {
-            unsigned char color = pig[row][col];
+            unsigned char color = PIG[row][col];
             if (color != 0) { // hoppa över bakgrund
                 putPixel(x + col, y + row, color);
             }
@@ -106,10 +108,6 @@ void drawButton16(int x, int y, const unsigned char btn[16][16]) {
 }
 
 
-drawButton16(50, 50, BTN_PLAY_UP);
-drawButton16(50, 50, BTN_PLAY_DOWN);
-
-
 static const unsigned char BTN_STOP_DOWN[16][16] = {
 {0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0},
 {0,1,3,3,3,3,3,3,3,3,3,3,3,1,0,0},
@@ -190,3 +188,14 @@ static const unsigned char BTN_PAUSE_UP[16][16] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 };
 
+void drawPlayButton(int x, int y, int pressed) {
+    drawButton16(x, y, pressed ? BTN_PLAY_DOWN : BTN_PLAY_UP);
+}
+
+void drawStopButton(int x, int y, int pressed) {
+    drawButton16(x, y, pressed ? BTN_STOP_DOWN : BTN_STOP_UP);
+}
+
+void drawPauseButton(int x, int y, int pressed) {
+    drawButton16(x, y, pressed ? BTN_PAUSE_DOWN : BTN_PAUSE_UP);
+}

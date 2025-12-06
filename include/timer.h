@@ -1,6 +1,5 @@
-
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef TIMER_DISPLAY_H
+#define TIMER_DISPLAY_H
 
 typedef struct {
     int value;   // sekunder kvar
@@ -9,7 +8,7 @@ typedef struct {
 } TimerDisplay;
 
   
-void initTimerDisplay(TimerDisplay* t, int startValue, int x, int y);
+void initTimerDisplay(TimerDisplay* t, int x, int y);
 void updateTimerDisplay(TimerDisplay* t);
 void drawTimerDisplay(const TimerDisplay* t);
 void tickTimerDisplay(TimerDisplay* t);

@@ -7,10 +7,8 @@
     hjälpfunktioner för kollisionsdetektion.
   - Anropa rendering via draw-funktioner (drawPaddle, drawBall) från main.c.
 */
+#include "game.h"
 #include "graphics.h"
-#include "paddle.h"
-#include "ball.h"
-#include "points.h"
 
 //Ökar poängen av varje spelare 
 Score leftScore; 
@@ -25,11 +23,11 @@ void handleScore(Ball *ball){
   if (!ball) return; 
 
   if (ball->x <=0){
-    uppdateScore(&rightScore);
+    updateScore(&rightScore);
   }
 
-  if (ball->x + ball->size > Screen_WIDTH){
-    uppdateScore(&leftScore);
+  if (ball->x + ball->size > SCREEN_WIDTH){
+    updateScore(&leftScore);
   }
 
 }
@@ -58,7 +56,7 @@ int ballTouch(const Ball *b, const Paddle *p) {
 }
 
 //Ändrar bollens riktningen när den träffar paddel
-void uppdateCollision(Ball* ball, Paddle* left, Paddle* right){
+void updateCollision(Ball* ball, Paddle* left, Paddle* right){
   if (!ball || !left || !right)return; 
   
   if (ballTouch(ball, left)){
@@ -69,4 +67,3 @@ void uppdateCollision(Ball* ball, Paddle* left, Paddle* right){
     ball->dx=-ball->dx; 
    }
 }
-

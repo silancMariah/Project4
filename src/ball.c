@@ -6,7 +6,9 @@
 #include "graphics.h"
 #include <stdio.h>
 
-static const unsigned char PONG_BALL[8][8] = {
+#define BALL_SPRITE_SIZE 8
+
+static const unsigned char PONG_BALL[BALL_SPRITE_SIZE][BALL_SPRITE_SIZE] = {
     {0, 0, 1, 1, 1, 1, 0, 0},
     {0, 0, 1, 2, 2, 1, 0, 0},
     {0, 1, 2, 3, 3, 2, 1, 0},
@@ -16,19 +18,18 @@ static const unsigned char PONG_BALL[8][8] = {
     {0, 0, 1, 2, 2, 1, 0, 0},
     {0, 0, 1, 1, 1, 1, 0, 0}};
 
-unsigned short ballColors[5] = {
-    0x0000, // 0 transparent
-    0x0000, // 1 svart outline
-    0xFFFF, // 2 vit
-    0xC618, // 3 ljusgrå
-    0x8410  // 4 mörkgrå
+static const unsigned char ballColors[] = {
+    0,  // transparent
+    2,  // outline
+    15, // fyllning
+    7   // highlight
 };
 
 void drawBallSprite(int x, int y)
 {
-    for (int r = 0; r < 16; r++)
+    for (int r = 0; r < BALL_SPRITE_SIZE; r++)
     {
-        for (int c = 0; c < 16; c++)
+        for (int c = 0; c < BALL_SPRITE_SIZE; c++)
         {
             unsigned char px = PONG_BALL[r][c];
             if (px != 0)

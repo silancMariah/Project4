@@ -10,11 +10,10 @@
 #include "paddle.h"
 #include "ball.h"
 #include "game.h"
+#include "gameover.h"
 #include "points.h"
 #include "klocka.h"
 #include "timer.h"
-/* drawBallPattern finns i ball.c men deklareras inte i ball.h */
-void drawBallPattern(int x, int y);
 
 /* Minimal delay så man kan se rörelser (justera vid behov) */
 static void delay(void)
@@ -33,6 +32,7 @@ int main(void)
   Tid(); // initialisera timern
   StartaTid();
   initTimerDisplay(&timer, 10, 10); // position på skärmen
+  initGameScore();
 
   while (1)
   {
@@ -45,15 +45,25 @@ int main(void)
     handleScore(&ball);
     drawScore(&leftScore);
     drawScore(&rightScore);
+    updateTimerDisplay(&timer);
     drawTimerDisplay(&timer);
+#ifdef VGA_SIMULATION
+    presentFrame();
+#endif
     // uppdatera bollens position
     delay();
-    if (TestaTimer()))
-      {
-        break;
-      }
+    if (TestaTimer())
+    {
+      break;
+    }
   }
   drawGameOverScreen();
+#ifdef VGA_SIMULATION
+  presentFrame();
+#endif
   drawTheWinner();
+#ifdef VGA_SIMULATION
+  presentFrame();
+#endif
   return 0;
 }

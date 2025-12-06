@@ -7,7 +7,7 @@ typedef struct {
     int y;
 } Score;
 
-void drawDigits (int degits, int x, int y);
+void drawDigit(int digit, int x, int y);
 void initScore(Score* score, int x, int y);
 void updateScore(Score* score);
 void drawScore(const Score* score);

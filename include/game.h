@@ -1,6 +1,16 @@
-/*
-  game.h
-  - Deklarationer för spel-logik i game.c (initGame, updateGame, resetRound, etc).
-  TODO:
-  - Lägg till prototyper för funktioner som main.c anropar.
-*/
+#ifndef GAME_H
+#define GAME_H
+
+#include "ball.h"
+#include "paddle.h"
+#include "points.h"
+
+extern Score leftScore;
+extern Score rightScore;
+
+void initGameScore(void);
+void handleScore(Ball *ball);
+int ballTouch(const Ball *b, const Paddle *p);
+void updateCollision(Ball *ball, Paddle *left, Paddle *right);
+
+#endif

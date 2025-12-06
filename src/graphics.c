@@ -17,6 +17,9 @@ extern volatile unsigned char *vga_buffer;
 
 #include "graphics.h"
 #include <stddef.h>
+#ifdef VGA_SIMULATION
+#include <stdio.h>
+#endif
 
 /* Ritar ett binärt mönster (pattern är w*h element i rad-major).
    1 = rita color_on, 0 = hoppa eller rita color_off (använd 255 för transparent). */
@@ -63,3 +66,47 @@ void drawPaddle(const Paddle *p, unsigned char color) {
     drawRect(p->x, p->y, p->width, p->height, color);
 }
 
+#ifdef VGA_SIMULATION
+/* Enkel terminal-presenterare: sampelar ned bufferten och skriver ASCII. */
+void presentFrame(void)
+{
+    static int first = 1;
+    const int cellW = 4;
+    const int cellH = 4;
+    static const char shades[] = " .:-=+*#%@";
+    const int shadeLevels = (int)(sizeof(shades) - 1);
+
+    if (first)
+    {
+        printf("\033[2J");
+        first = 0;
+    }
+    printf("\033[H");
+
+    for (int y = 0; y < SCREEN_HEIGHT; y += cellH)
+    {
+        for (int x = 0; x < SCREEN_WIDTH; x += cellW)
+        {
+            int sum = 0;
+            for (int dy = 0; dy < cellH; dy++)
+            {
+                for (int dx = 0; dx < cellW; dx++)
+                {
+                    unsigned char raw = vga_buffer[(y + dy) * SCREEN_WIDTH + (x + dx)];
+                    int intensity = raw * 16; // lyft små färgindex till tydligare nivåer
+                    if (intensity > 255)
+                        intensity = 255;
+                    sum += intensity;
+                }
+            }
+            int avg = sum / (cellW * cellH);
+            int idx = (avg * (shadeLevels - 1)) / 255;
+            if (idx < 0) idx = 0;
+            if (idx >= shadeLevels) idx = shadeLevels - 1;
+            putchar(shades[idx]);
+        }
+        putchar('\n');
+    }
+    fflush(stdout);
+}
+#endif

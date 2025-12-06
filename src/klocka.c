@@ -1,5 +1,54 @@
-#include <stdio.h>
 #include "klocka.h"
+
+#ifdef SIMULATE_TIMER
+#include <time.h>
+
+static const int TIMER_DURATION_SECONDS = 30;
+static struct timespec startTime;
+static int timerRunning = 0;
+
+static double elapsed_since_start(void)
+{
+    struct timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    double elapsed = (double)(now.tv_sec - startTime.tv_sec) +
+                     (double)(now.tv_nsec - startTime.tv_nsec) / 1e9;
+    if (elapsed < 0)
+        elapsed = 0;
+    return elapsed;
+}
+
+void Tid(void)
+{
+    /* Ingen hårdvara att konfigurera i simulering. */
+}
+
+void StartaTid(void)
+{
+    clock_gettime(CLOCK_MONOTONIC, &startTime);
+    timerRunning = 1;
+}
+
+void StoppaTid(void)
+{
+    timerRunning = 0;
+}
+
+int TestaTimer(void)
+{
+    if (!timerRunning)
+        return 1;
+    return elapsed_since_start() >= TIMER_DURATION_SECONDS;
+}
+
+int getSecondElapsed(void)
+{
+    if (!timerRunning)
+        return 0;
+    return (int)elapsed_since_start();
+}
+
+#else
 //Basfrekvensen hos TIMER 30MHz
 #define BAS_FREK 30000000
 
@@ -10,11 +59,6 @@ volatile unsigned short *TMR1_CTRL = (unsigned short*) 0x04000024;
 volatile unsigned short *TMR1_STAT = (unsigned short*) 0x04000020;
 volatile unsigned short *TMR1_SNAPL = (unsigned short*) 0x04000030;
 volatile unsigned short *TMR1_SNAPH = (unsigned short*) 0x04000034;
-
-//Aktuella timer-värde 
-unsigned int current_timer = *(TMR1_SNAPL) | (*(TMR1_SNAPH) << 16);
-
-
 
 /*Här bestämmer vi antal cyklar 30 skeunder motsvarar och
 och sätter CONT=0 så att räknaren stoppas när den nått noll*/
@@ -67,3 +111,4 @@ int TestaTimer(){
     //Timern är inte klar 
     return(0);
 }
+#endif

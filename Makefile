@@ -7,7 +7,19 @@ INC_DIR = include
 BUILD_DIR = build
 
 # Files
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+SRCS = \
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/animation.c \
+	$(SRC_DIR)/ball.c \
+	$(SRC_DIR)/game.c \
+	$(SRC_DIR)/gameover.c \
+	$(SRC_DIR)/graphics.c \
+	$(SRC_DIR)/input.c \
+	$(SRC_DIR)/klocka.c \
+	$(SRC_DIR)/paddle.c \
+	$(SRC_DIR)/points.c \
+	$(SRC_DIR)/timer.c \
+	$(SRC_DIR)/vga.c
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
 # Output
