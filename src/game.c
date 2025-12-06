@@ -10,13 +10,35 @@
 #include "graphics.h"
 #include "paddle.h"
 #include "ball.h"
+#include "points.h"
 
+//Ökar poängen av varje spelare 
+Score leftScore; 
+Score rightScore; 
+
+void initGameScore(){
+  initScore(&leftScore,50,10);
+  initScore(&rightScore,200,10);
+}
+
+void handleScore(Ball *ball){
+  if (!ball) return; 
+
+  if (ball->x <=0){
+    uppdateScore(&rightScore);
+  }
+
+  if (ball->x + ball->size > Screen_WIDTH){
+    uppdateScore(&leftScore);
+  }
+
+}
 /* Returnerar 1 om bollen (b) överlappar paddeln (p), annars 0 */
 //Denna funktion kontroller om bollen träffar paddlar 
 int ballTouch(const Ball *b, const Paddle *p) {
     if (!b || !p) return 0;  // safety-check
 
-   int bollVänster = b->x;
+    int bollVänster = b->x;
     int bollTopp = b->y;
     int bollHöger = b->x + b->size;
     int bollBotten = b->y + b->size;
@@ -34,7 +56,6 @@ int ballTouch(const Ball *b, const Paddle *p) {
 
     return 1; // annars: överlapp
 }
-
 
 //Ändrar bollens riktningen när den träffar paddel
 void uppdateCollision(Ball* ball, Paddle* left, Paddle* right){
