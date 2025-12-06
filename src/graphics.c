@@ -7,8 +7,6 @@
   - Implementera drawPaddle() och drawBall() eller flytta deras deklarationer
     till lämplig header.
 */
-#ifndef GRAPHICS_H
-#define GRAPHICS_H
 
 #include "ball.h"
 #include "paddle.h"
@@ -58,11 +56,6 @@ void drawRect(int x, int y, int w, int h, unsigned char color) {
             putPixel(x + dx, y + dy, color);
         }
     }
-}
-
-void drawBall(const Ball *b, unsigned char color) {
-    if (!b) return;
-    drawRect(b->x, b->y, b->size, b->size, color);
 }
 
 void drawPaddle(const Paddle *p, unsigned char color) {

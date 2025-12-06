@@ -17,5 +17,7 @@ typedef struct {
 
 void updateBall(Ball* b);
 void drawBallPattern(int x, int y);
+void printBall();
+
 
 #endif
