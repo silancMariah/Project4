@@ -14,6 +14,7 @@
 #include "points.h"
 #include "klocka.h"
 #include "timer.h"
+#include "input.h"
 
 /* Minimal delay så man kan se rörelser (justera vid behov) */
 static void delay(void)
@@ -45,6 +46,7 @@ int main(void)
     handleScore(&ball);
     drawScore(&leftScore);
     drawScore(&rightScore);
+    rörligaPaddlar();
     updateTimerDisplay(&timer);
     drawTimerDisplay(&timer);
 #ifdef VGA_SIMULATION
