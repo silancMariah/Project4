@@ -41,6 +41,10 @@ int main(void)
     drawPaddle(&right, 7);
     drawBallPattern(ball.x, ball.y); // rita bollmönstret
     updateBall(&ball);
+    updateCollision(&ball, &left, &right);
+    handleScore(&ball);
+    drawScore(&leftScore);
+    drawScore(&rightScore);
     drawTimerDisplay(&timer);
     // uppdatera bollens position
     delay();
