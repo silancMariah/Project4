@@ -16,23 +16,25 @@
 int ballTouch(const Ball *b, const Paddle *p) {
     if (!b || !p) return 0;  // safety-check
 
-    int bx1 = b->x;
-    int by1 = b->y;
-    int bx2 = b->x + b->size;
-    int by2 = b->y + b->size;
+   int bollVänster = b->x;
+    int bollTopp = b->y;
+    int bollHöger = b->x + b->size;
+    int bollBotten = b->y + b->size;
+  
+//Samma sak för paddeln 
+    int paddelVänster = p->x;
+    int paddelTopp = p->y;
+    int paddelHöger = p->x + p->width;
+    int paddelBotten = p->y + p->height;
 
-    int px1 = p->x;
-    int py1 = p->y;
-    int px2 = p->x + p->width;
-    int py2 = p->y + p->height;
-
-    if (bx2 <= px1) return 0; // boll helt till vänster om paddel
-    if (bx1 >= px2) return 0; // boll helt till höger om paddel
-    if (by2 <= py1) return 0; // boll helt ovanför paddel
-    if (by1 >= py2) return 0; // boll helt under paddel
+    if (bollHöger <= paddelVänster) return 0; // boll helt till vänster om paddel
+    if (bollVänster >= paddelHöger) return 0; // boll helt till höger om paddel
+    if (bollBotten <= paddelTopp) return 0; // boll helt ovanför paddel
+    if (bollTopp >= paddelBotten) return 0; // boll helt under paddel
 
     return 1; // annars: överlapp
 }
+
 
 //Ändrar bollens riktningen när den träffar paddel
 void uppdateCollision(Ball* ball, Paddle* left, Paddle* right){
