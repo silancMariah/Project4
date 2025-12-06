@@ -12,6 +12,7 @@
 #include "ball.h"
 
 /* Returnerar 1 om bollen (b) överlappar paddeln (p), annars 0 */
+//Denna funktion kontroller om bollen träffar paddlar 
 int ballTouch(const Ball *b, const Paddle *p) {
     if (!b || !p) return 0;  // safety-check
 
@@ -31,5 +32,18 @@ int ballTouch(const Ball *b, const Paddle *p) {
     if (by1 >= py2) return 0; // boll helt under paddel
 
     return 1; // annars: överlapp
+}
+
+//Ändrar bollens riktningen när den träffar paddel
+void uppdateCollision(Ball* ball, Paddle* left, Paddle* right){
+  if (!ball || !left || !right)return; 
+  
+  if (ballTouch(ball, left)){
+    ball->dx= -ball->dx; 
+  }
+
+   if (ballTouch(ball,right)){
+    ball->dx=-ball->dx; 
+   }
 }
 
