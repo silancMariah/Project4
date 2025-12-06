@@ -1,6 +1,7 @@
 #include graphics.h
 #include points.h
 
+//Ritar siffror på skärmen 
 void drawDigits(int digit, int x, int y)
 {
     for (int row = 0; row < 5; row++)
@@ -14,7 +15,7 @@ void drawDigits(int digit, int x, int y)
         }
     }
 }
-
+//3D array för hur siffrorna ska ritas 
 static const int digits[10][5][3] = {
     {// 0
      {1, 1, 1},
@@ -86,14 +87,17 @@ void initScore(Score *score, int x, int y)
     score->y = y;
 }
 
+//Uppdaterar poängen 
 void updateScore(Score *score)
 {
     if (!score)
         return;
+    //ökar value med +1 
     score→ value++;
 }
 }
 
+//Ritar poängen som tiotal och ental 
 void drawScore(const Score *score)
 {
     if (!score)
