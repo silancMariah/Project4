@@ -28,5 +28,3 @@ void movePaddle(Paddle *p, int delta)
     }
 }
 
-
-}
