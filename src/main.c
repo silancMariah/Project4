@@ -53,6 +53,7 @@ int main(void)
         break;
       }
   }
-
+  drawGameOverScreen();
+  drawTheWinner();
   return 0;
 }
