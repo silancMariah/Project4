@@ -62,7 +62,7 @@ void drawDigits(int digit, int x, int y)
     for (int row = 0; row < 5; row++) {
         for (int col = 0; col < 3; col++) {
             if (digits[digit][row][col] == 1) {
-                putPixel(x + col, y + row, 15); // ritad med färg 15
+                putPixel(x + col, y + row, 0xFFFF); // vit
             }
         }
     }

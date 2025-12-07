@@ -7,8 +7,7 @@ typedef struct {
     int y;
 } TimerDisplay;
 
-  
-void initTimerDisplay(TimerDisplay* t, int x, int y);
+void initTimerDisplay(TimerDisplay* t, int startValue, int x, int y);
 void updateTimerDisplay(TimerDisplay* t);
 void drawTimerDisplay(const TimerDisplay* t);
 void tickTimerDisplay(TimerDisplay* t);

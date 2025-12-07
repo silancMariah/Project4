@@ -9,6 +9,7 @@
 */
 #include "game.h"
 #include "graphics.h"
+#include <stdlib.h>
 
 //Ökar poängen av varje spelare 
 Score leftScore; 
@@ -19,15 +20,32 @@ void initGameScore(){
   initScore(&rightScore,200,10);
 }
 
+/* Lägg bollen i mitten och sätt riktningen för nästa serve. direction>0 => höger, <0 => vänster */
+static void resetBall(Ball *ball, int direction)
+{
+    if (!ball) return;
+
+    ball->x = SCREEN_WIDTH / 2 - ball->size / 2;
+    ball->y = SCREEN_HEIGHT / 2 - ball->size / 2;
+
+    /* säkerställ ett rimligt fartvärde på x-axeln */
+    int speedX = ball->dx == 0 ? 1 : abs(ball->dx);
+    ball->dx = (direction >= 0) ? speedX : -speedX;
+
+    /* lämna y-farten som positiv om den var noll så bollen alltid rör sig */
+    if (ball->dy == 0) ball->dy = 1;
+}
+
 void handleScore(Ball *ball){
   if (!ball) return; 
 
-  if (ball->x <=0){
+  if (ball->x <= 0){
     updateScore(&rightScore);
+    resetBall(ball, -1); // serva mot vänster efter poäng för höger
   }
-
-  if (ball->x + ball->size > SCREEN_WIDTH){
+  else if (ball->x + ball->size >= SCREEN_WIDTH){
     updateScore(&leftScore);
+    resetBall(ball, 1); // serva mot höger efter poäng för vänster
   }
 
 }
@@ -61,10 +79,12 @@ void updateCollision(Ball* ball, Paddle* left, Paddle* right){
   
   if (ballTouch(ball, left)){
     ball->dx= -ball->dx; 
+    ball->x = left->x + left->width; // flytta utanför paddeln för att undvika fastlåsning
   }
 
    if (ballTouch(ball,right)){
     ball->dx=-ball->dx; 
+    ball->x = right->x - ball->size;
    }
 }
 

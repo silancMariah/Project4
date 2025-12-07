@@ -13,15 +13,19 @@
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
-extern volatile unsigned char *vga_buffer;
+extern volatile unsigned short *vga_buffer;
 
 #include "graphics.h"
 #include <stddef.h>
+#include <stdint.h>
+#ifdef VGA_SIMULATION
+#include <stdio.h>
+#endif
 
 /* Ritar ett binärt mönster (pattern är w*h element i rad-major).
    1 = rita color_on, 0 = hoppa eller rita color_off (använd 255 för transparent). */
 void drawPattern(int x0, int y0, const int *pattern, int w, int h,
-                 unsigned char color_on, unsigned char color_off)
+                 unsigned short color_on, unsigned short color_off)
 {
     if (!pattern || w <= 0 || h <= 0) return;
     for (int dy = 0; dy < h; dy++) {
@@ -29,19 +33,19 @@ void drawPattern(int x0, int y0, const int *pattern, int w, int h,
             int v = pattern[dy * w + dx];
             if (v)
                 putPixel(x0 + dx, y0 + dy, color_on);
-            else if (color_off != 255)
+            else if (color_off != 0xFFFF)
                 putPixel(x0 + dx, y0 + dy, color_off);
         }
     }
 }
 
 /* Låg-nivå: skriv en pixel i videobuffern */
-void putPixel(int x, int y, unsigned char color) {
+void putPixel(int x, int y, unsigned short color) {
     if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT) return;
     vga_buffer[y * SCREEN_WIDTH + x] = color;
 }
 
-void clearScreen(unsigned char color) {
+void clearScreen(unsigned short color) {
     for (int y = 0; y < SCREEN_HEIGHT; y++) {
         for (int x = 0; x < SCREEN_WIDTH; x++) {
             putPixel(x, y, color);
@@ -49,7 +53,7 @@ void clearScreen(unsigned char color) {
     }
 }
 
-void drawRect(int x, int y, int w, int h, unsigned char color) {
+void drawRect(int x, int y, int w, int h, unsigned short color) {
     if (w <= 0 || h <= 0) return;
     for (int dy = 0; dy < h; dy++) {
         for (int dx = 0; dx < w; dx++) {
@@ -58,16 +62,34 @@ void drawRect(int x, int y, int w, int h, unsigned char color) {
     }
 }
 
-void drawPaddle(const Paddle *p, unsigned char color) {
+void drawPaddle(const Paddle *p, unsigned short color) {
     if (!p) return;
     drawRect(p->x, p->y, p->width, p->height, color);
 }
 
 /* Enkel testbild: lodräta färgränder över hela skärmen. */
 void drawTestPattern(void) {
+    static const unsigned short palette[16] = {
+        0x0000, // svart
+        0xF800, // röd
+        0x07E0, // grön
+        0x001F, // blå
+        0xFFE0, // gul
+        0xF81F, // magenta
+        0x07FF, // cyan
+        0xFFFF, // vit
+        0x7BEF, // ljusgrå
+        0x4208, // mörkgrå
+        0xFC00, // orange-ish
+        0x83E0, // oliv
+        0x841F, // lila
+        0x03E0, // ljusgrön
+        0x0010, // mörkblå
+        0x7C00  // mörkröd
+    };
     for (int y = 0; y < SCREEN_HEIGHT; y++) {
         for (int x = 0; x < SCREEN_WIDTH; x++) {
-            unsigned char color = (unsigned char)((x / 20) % 16);
+            unsigned short color = palette[(x / 20) & 0xF];
             putPixel(x, y, color);
         }
     }
@@ -99,8 +121,8 @@ void presentFrame(void)
             {
                 for (int dx = 0; dx < cellW; dx++)
                 {
-                    unsigned char raw = vga_buffer[(y + dy) * SCREEN_WIDTH + (x + dx)];
-                    int intensity = raw * 16; // lyft små färgindex till tydligare nivåer
+                    unsigned short raw = vga_buffer[(y + dy) * SCREEN_WIDTH + (x + dx)];
+                    int intensity = (raw & 0xFFFF) >> 8; // ta högre byte som luminans
                     if (intensity > 255)
                         intensity = 255;
                     sum += intensity;
