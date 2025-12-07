@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "dtekv-lib.h"
 
 #define JTAG_UART ((volatile unsigned int*) 0x04000040)
@@ -52,7 +51,6 @@ void print_hex32 ( unsigned int x)
    Description: This code handles an exception. */
 void handle_exception ( unsigned arg0, unsigned arg1, unsigned arg2, unsigned arg3, unsigned arg4, unsigned arg5, unsigned mcause, unsigned syscall_num )
 {
-  (void)arg1; (void)arg2; (void)arg3; (void)arg4; (void)arg5;
   switch (mcause)
     {
     case 0:
@@ -63,7 +61,7 @@ void handle_exception ( unsigned arg0, unsigned arg1, unsigned arg2, unsigned ar
       break;
     case 11:
       if (syscall_num == 4)
-	print((char *)(uintptr_t)arg0); 
+	print((char*) arg0); 
       if (syscall_num == 11)
 	printc(arg0);
       return ;
