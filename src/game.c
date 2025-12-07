@@ -67,3 +67,13 @@ void updateCollision(Ball* ball, Paddle* left, Paddle* right){
     ball->dx=-ball->dx; 
    }
 }
+
+int playerLost() {
+    // välj max‐score (ex. först till 5 poäng)
+    int MAX_SCORE = 5;
+
+    if (leftScore.value >= MAX_SCORE) return 1;
+    if (rightScore.value >= MAX_SCORE) return 1;
+
+    return 0;
+}

@@ -15,6 +15,9 @@
 #include "klocka.h"
 #include "timer.h"
 #include "input.h"
+#include "flowstate.h"
+#include <stdio.h>
+
 
 /* Minimal delay så man kan se rörelser (justera vid behov) */
 static void delay(void)
@@ -37,6 +40,8 @@ int main(void)
 
   while (1)
   {
+    updateGame();
+    renderGame();  // Ritar baserat på state
     clearScreen(0);       // rensa skärmen
     drawPaddle(&left, 7); // rita paddlar med färg 7
     drawPaddle(&right, 7);

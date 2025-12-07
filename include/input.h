@@ -1,9 +1,13 @@
+#ifndef INPUT_H
+#define INPUT_H
+
 /*
   input.h
   - Publika API för input.c, t.ex. pollInput(), initInput().
-  TODO:
-  - Deklarera funktioner som main/game använder för indata.
+  - Lägg faktiska prototyper här när inmatningsstödet implementeras.
 */
+
+#endif
 
 #ifndef INPUT_H
 #define INPUT_H
